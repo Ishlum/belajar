@@ -1,8 +1,8 @@
 package homecontroller
 
 import (
-	"html/template"
 	"net/http"
+	"text/template"
 )
 
 func Welcome(w http.ResponseWriter, r *http.Request) {

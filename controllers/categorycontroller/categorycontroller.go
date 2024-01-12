@@ -3,9 +3,9 @@ package categorycontroller
 import (
 	"go-web-native/entities"
 	"go-web-native/models/categorymodel"
-	"html/template"
 	"net/http"
 	"strconv"
+	"text/template"
 	"time"
 )
 
@@ -29,6 +29,7 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+
 		temp.Execute(w, nil)
 	}
 
@@ -37,15 +38,15 @@ func Add(w http.ResponseWriter, r *http.Request) {
 
 		category.Name = r.FormValue("name")
 		category.CreatedAt = time.Now()
-		category.UpdatedAt = time.Now()
+		category.UpddatedAt = time.Now()
 
-		if ok := categorymodel.Create(category); !ok {
+		ok := categorymodel.Create(category)
+		if !ok {
 			temp, _ := template.ParseFiles("views/category/create.html")
 			temp.Execute(w, nil)
 		}
 
 		http.Redirect(w, r, "/categories", http.StatusSeeOther)
-
 	}
 }
 
@@ -80,20 +81,20 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		category.Name = r.FormValue("name")
-		category.UpdatedAt = time.Now()
+		category.UpddatedAt = time.Now()
 
 		if ok := categorymodel.Update(id, category); !ok {
-			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
+			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusTemporaryRedirect)
 			return
 		}
 
 		http.Redirect(w, r, "/categories", http.StatusSeeOther)
-
 	}
 }
 
 func Delete(w http.ResponseWriter, r *http.Request) {
 	idString := r.URL.Query().Get("id")
+
 	id, err := strconv.Atoi(idString)
 	if err != nil {
 		panic(err)
