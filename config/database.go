@@ -10,7 +10,7 @@ import (
 var DB *sql.DB
 
 func ConnectDB() {
-	db, err := sql.Open("mysql", "root:ahA2-BhH-BC-5dg5acC1cFchFEB5-AfB@tcp(godockerDB)/railway?parseTime=true")
+	db, err := sql.Open("mysql", "root:ahA2-BhH-BC-5dg5acC1cFchFEB5-AfB@/railway?parseTime=true")
 	if err != nil {
 		panic(err)
 	}
